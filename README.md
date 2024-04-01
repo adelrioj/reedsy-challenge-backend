@@ -17,8 +17,28 @@ We would like you to provide us with a small web application to help us manage t
 Write a paragraph about yourself, your hobbies and your major achievements in your career or study
 so far. Add another one about your professional experience and commercial projects you've been involved with.
 
+## How to run the server
+- Install bundler:
+  `gem install bundler`
+- Install gems:
+  `bundle install`
+- Launch Rails server:
+  `rails s`
 
-### Guidelines
+After this, the server will be available at http://localhost:3000
+
+### Database creation
+The first time running the server you need to create the database:
+`rails db:setup`
+Since this is SQLite, it will create the database files under `./storage/` 
+
+### Some considerations
+- The project was generated using the --api flag, so it doesn't include views.
+- I used SQLite to avoid the need of an external database, but for a production environment, I would use PostgreSQL or MySQL instead. For a more professional environment, I would also use Docker to run the db even in development.
+- I used RSpec for testing. Minitest is also fine, but I'm more familiar with RSpec.
+- I would assume that the API would evolve over time, so in a prod environment, I would use versioning in the API. For the sake of simplicity, I didn't do it here.
+
+## Guidelines
 
 Some important notes before diving into the specifics:
 
