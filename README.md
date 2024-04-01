@@ -35,8 +35,10 @@ Since this is SQLite, it will create the database files under `./storage/`
 ### Some considerations
 - The project was generated using the --api flag, so it doesn't include views.
 - I used SQLite to avoid the need of an external database, but for a production environment, I would use PostgreSQL or MySQL instead. For a more professional environment, I would also use Docker to run the db even in development.
-- I used RSpec for testing. Minitest is also fine, but I'm more familiar with RSpec.
+- I've added the three initial products to the database using seeds.
+- I used RSpec for testing. Minitest is also fine, but I'm more familiar with RSpec. I'm not using FactoryBot, since the models are simple and I can create them directly in the tests.
 - I would assume that the API would evolve over time, so in a prod environment, I would use versioning in the API. For the sake of simplicity, I didn't do it here.
+- I've not used any cache system, like Redis, for simplicity. In a production environment it's a must.
 
 ## Guidelines
 
@@ -57,6 +59,31 @@ Some important notes before diving into the specifics:
 ### Question 1
 
 Implement an API endpoint that allows listing the existing items in the store, as well as their attributes.
+
+cURL:
+```
+curl http://localhost:3000/products
+```
+response example:
+```
+[
+  {
+    "code": "MUG",
+    "name": "Reedsy Mug",
+    "price": 6.0
+  },
+  {
+    "code": "TSHIRT",
+    "name": "Reedsy T-shirt",
+    "price": 15.0
+  },
+  {
+    "code": "HOODIE",
+    "name": "Reedsy Hoodie",
+    "price": 20.0
+  }
+]
+```
 
 ### Question 2
 
