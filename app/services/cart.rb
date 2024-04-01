@@ -7,7 +7,7 @@ class Cart
 
   def calculate_total
     @products.inject(0.0) do |total, (code, quantity)|
-      total + inventory[code] * quantity
+      total + calculate_price_single_product(code, quantity)
     end
   end
 
@@ -25,7 +25,25 @@ class Cart
     end
   end
 
+  def calculate_price_single_product(code, quantity)
+    price = inventory[code]
+    discount = find_applicable_discount(code, quantity)
+    price -= price * (discount.percentage / 100.0) if discount
+
+    price * quantity
+  end
+
+  def find_applicable_discount(code, quantity)
+    discounts[code]&.select do |discount|
+      quantity >= discount.quantity_threshold
+    end&.max_by(&:percentage)
+  end
+
   def inventory
     @inventory ||= Product.pluck(:code, :price).to_h
+  end
+
+  def discounts
+    @discounts ||= PercentageDiscount.all.group_by(&:product_code)
   end
 end

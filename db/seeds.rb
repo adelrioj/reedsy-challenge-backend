@@ -16,3 +16,10 @@ Product.find_or_create_by!(code: "HOODIE") do |product|
   product.name = "Reedsy Hoodie"
   product.price = 20.0
 end
+
+PercentageDiscount.find_or_create_by!(product_code: "TSHIRT", quantity_threshold: 3, percentage: 30)
+
+# Up to 30% discount on MUGs when 150 or more
+(1..15).each do |index|
+  PercentageDiscount.find_or_create_by!(product_code: "MUG", quantity_threshold: index * 10, percentage: index * 2)
+end

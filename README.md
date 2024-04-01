@@ -35,11 +35,12 @@ Since this is SQLite, it will create the database files under `./storage/`
 ### Some considerations
 - The project was generated using the --api flag, so it doesn't include views.
 - I used SQLite to avoid the need of an external database, but for a production environment, I would use PostgreSQL or MySQL instead. For a more professional environment, I would also use Docker to run the db even in development.
-- I've added the three initial products to the database using seeds.
+- I've added the three initial products to the database using seeds. Same with the discounts in question 4.
 - I used RSpec for testing. Minitest is also fine, but I'm more familiar with RSpec. I'm not using FactoryBot, since the models are simple and I can create them directly in the tests.
 - I would assume that the API would evolve over time, so in a prod environment, I would use versioning in the API. For the sake of simplicity, I didn't do it here.
 - I've not used any cache system, like Redis, for simplicity. In a production environment it's a must.
 - In Questions 3 and 4, I've ignored all non-existent codes. In a production implementation, I would return an error message instead.
+- I realized when implementing question 4 that the API design for calculating the total could have been better if instead of accepting a list of elements, it accepted a list of hashes with the product code and quantity. I didn't change it because it would require a lot of changes in the tests and I'm running out of time.
 
 ## Guidelines
 
@@ -136,42 +137,48 @@ We'd like to expand our store to provide some discounted prices in some situatio
 Make the necessary changes to your code to allow these discounts to be in place and to be reflected in the existing endpoints. Also make your discounts flexible enough so that it's easy to change a discount's percentage (i.e., with minimal impact to the source code).
 
 Here's how the above price examples would be updated with these discounts:
+
+curl:
 ```
-Items: 1 MUG, 1 TSHIRT, 1 HOODIE
-Total: 41.00
+curl -X POST -H "Content-Type: application/json" -d '{"product_codes":["MUG", "TSHIRT", "HOODIE"]}' http://localhost:3000/total_price
+```
+response:
+```
+{"items":"1 MUG, 1 TSHIRT, 1 HOODIE","total":"41.0"}%
 ```
 
+curl:
 ```
-Items: 9 MUG, 1 TSHIRT
-Total: 69.00
+curl -X POST -H "Content-Type: application/json" -d '{"product_codes":["MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "TSHIRT"]}' http://localhost:3000/total_price
 ```
-
+response:
 ```
-Items: 10 MUG, 1 TSHIRT
-Total: 73.80
-
-Explanation:
-  - Total without discount: 60.00 + 15.00 = 75.00
-  - Discount: 1.20 (2% discount on MUG)
-  - Total: 75.00 - 1.20 = 73.80
+{"items":"9 MUG, 1 TSHIRT","total":"69.0"}%
 ```
 
+curl:
 ```
-Items: 45 MUG, 3 TSHIRT
-Total: 279.90
-
-Explanation:
-  - Total without discount: 270.00 + 45.00 = 315.00
-  - Discount: 21.60 (8% discount on MUG) + 13.50 (30% discount on TSHIRT) = 35.10
-  - Total: 315.00 - 35.10 = 279.90
+curl -X POST -H "Content-Type: application/json" -d '{"product_codes":["MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "TSHIRT"]}' http://localhost:3000/total_price
+```
+response:
+```
+{"items":"10 MUG, 1 TSHIRT","total":"73.8"}%
 ```
 
+curl:
 ```
-Items: 200 MUG, 4 TSHIRT, 1 HOODIE
-Total: 902.00
+curl -X POST -H "Content-Type: application/json" -d '{"product_codes":["MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "TSHIRT", "TSHIRT", "TSHIRT"]}' http://localhost:3000/total_price
+```
+response:
+```
+{"items":"45 MUG, 3 TSHIRT","total":"279.90"}%
+```
 
-Explanation:
-  - Total without discount: 1200.00 + 60.00 + 20.00 = 1280.00
-  - Discount: 360.00 (30% discount on MUG) + 18.00 (30% discount on TSHIRT) = 378.00
-  - Total: 1280.00 - 378.00 = 902.00
+curl:
+```
+curl -X POST -H "Content-Type: application/json" -d '{"product_codes":["MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "MUG", "TSHIRT", "TSHIRT", "TSHIRT", "TSHIRT", "HOODIE"]}' http://localhost:3000/total_price
+```
+response:
+```
+{"items":"200 MUG, 4 TSHIRT, 1 HOODIE","total":"902.0"}%
 ```
