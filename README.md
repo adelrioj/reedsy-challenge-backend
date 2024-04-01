@@ -13,9 +13,13 @@ HOODIE       | Reedsy Hoodie          |  20.00
 We would like you to provide us with a small web application to help us manage this store.
 
 ## Preface
+Hello Reedsy Team!
 
-Write a paragraph about yourself, your hobbies and your major achievements in your career or study
-so far. Add another one about your professional experience and commercial projects you've been involved with.
+My name is Alejandro, I live in Andorra, and I've been a software engineer for more than 10 years. I've worked in a variety of projects, always in product companies that ranged from 10 to 900 people, and in different areas like retail or delivery. 
+I've worked with a variety of technologies, but I'm most comfortable with Ruby on Rails.
+When I’m not working, I enjoy outdoor sports, practicing Krav Maga, and I’m really passionate about cooking. I’m also interested in trading and have developed some TradingView scripts.
+
+Hope you like the project! For sure there is a lot I can improve, but I think I did enough to kickstart a good conversation.
 
 ## How to run the server
 - Install bundler:
@@ -28,14 +32,14 @@ so far. Add another one about your professional experience and commercial projec
 After this, the server will be available at http://localhost:3000
 
 ### Database creation
-The first time running the server you need to create the database:
+The first time running the server you need to setup the database:
 `rails db:setup`
 Since this is SQLite, it will create the database files under `./storage/` 
 
 ### Some considerations
 - The project was generated using the --api flag, so it doesn't include views.
-- I used SQLite to avoid the need of an external database, but for a production environment, I would use PostgreSQL or MySQL instead. For a more professional environment, I would also use Docker to run the db even in development.
-- I've added the three initial products to the database using seeds. Same with the discounts in question 4.
+- I used SQLite to avoid the need of an external database, but for a production environment, I would use PostgreSQL or MySQL instead. For a more professional dev environment, I would also use Docker.
+- I've added the three initial products to the database using seeds, and also all the discounts from question 4.
 - I used RSpec for testing. Minitest is also fine, but I'm more familiar with RSpec. I'm not using FactoryBot, since the models are simple and I can create them directly in the tests.
 - I would assume that the API would evolve over time, so in a prod environment, I would use versioning in the API. For the sake of simplicity, I didn't do it here.
 - I've not used any cache system, like Redis, for simplicity. In a production environment it's a must.
