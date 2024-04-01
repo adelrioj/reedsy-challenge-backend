@@ -39,6 +39,7 @@ Since this is SQLite, it will create the database files under `./storage/`
 - I used RSpec for testing. Minitest is also fine, but I'm more familiar with RSpec. I'm not using FactoryBot, since the models are simple and I can create them directly in the tests.
 - I would assume that the API would evolve over time, so in a prod environment, I would use versioning in the API. For the sake of simplicity, I didn't do it here.
 - I've not used any cache system, like Redis, for simplicity. In a production environment it's a must.
+- In Questions 3 and 4, I've ignored all non-existent codes. In a production implementation, I would return an error message instead.
 
 ## Guidelines
 
@@ -83,24 +84,41 @@ curl -X PATCH -H "Content-Type: application/json" -d '{"price": "6.0"}' http://l
 Implement an API endpoint that allows one to check the price of a given list of items.
 
 Some examples on the values expected:
+
+curl:
 ```
-Items: 1 MUG, 1 TSHIRT, 1 HOODIE
-Total: 41.00
+curl -X POST -H "Content-Type: application/json" -d '{"product_codes":["MUG", "TSHIRT", "HOODIE"]}' http://localhost:3000/total_price
+```
+response:
+```
+{"items":"1 MUG, 1 TSHIRT, 1 HOODIE","total":"41.0"}%
 ```
 
+curl:
 ```
-Items: 2 MUG, 1 TSHIRT
-Total: 27.00
+curl -X POST -H "Content-Type: application/json" -d '{"product_codes":["MUG", "MUG", "TSHIRT"]}' http://localhost:3000/total_price
+```
+response:
+```
+{"items":"2 MUG, 1 TSHIRT","total":"27.0"}
 ```
 
+curl:
 ```
-Items: 3 MUG, 1 TSHIRT
-Total: 33.00
+curl -X POST -H "Content-Type: application/json" -d '{"product_codes":["MUG", "MUG", "MUG", "TSHIRT"]}' http://localhost:3000/total_price
+```
+response:
+```
+{"items":"3 MUG, 1 TSHIRT","total":"33.0"}%
 ```
 
+curl:
 ```
-Items: 2 MUG, 4 TSHIRT, 1 HOODIE
-Total: 92.00
+curl -X POST -H "Content-Type: application/json" -d '{"product_codes":["MUG", "MUG", "TSHIRT", "TSHIRT", "TSHIRT", "TSHIRT", "HOODIE"]}' http://localhost:3000/total_price
+```
+response:
+```
+{"items":"2 MUG, 4 TSHIRT, 1 HOODIE","total":"92.0"}%
 ```
 
 ### Question 4
