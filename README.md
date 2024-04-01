@@ -62,32 +62,21 @@ Implement an API endpoint that allows listing the existing items in the store, a
 
 cURL:
 ```
-curl http://localhost:3000/products
+curl -X GET http://localhost:3000/products
 ```
 response example:
 ```
-[
-  {
-    "code": "MUG",
-    "name": "Reedsy Mug",
-    "price": 6.0
-  },
-  {
-    "code": "TSHIRT",
-    "name": "Reedsy T-shirt",
-    "price": 15.0
-  },
-  {
-    "code": "HOODIE",
-    "name": "Reedsy Hoodie",
-    "price": 20.0
-  }
-]
+[{"code":"MUG","name":"Reedsy Mug","price":"1.99"},{"code":"TSHIRT","name":"Reedsy T-shirt","price":"15.0"},{"code":"HOODIE","name":"Reedsy Hoodie","price":"20.0"}]%  
 ```
 
 ### Question 2
 
 Implement an API endpoint that allows updating the price of a given product.
+
+cURL:
+```
+curl -X PATCH -H "Content-Type: application/json" -d '{"price": "6.0"}' http://localhost:3000/products/MUG
+```
 
 ### Question 3
 
