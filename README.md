@@ -186,3 +186,28 @@ response:
 ```
 {"items":"200 MUG, 4 TSHIRT, 1 HOODIE","total":"902.0"}%
 ```
+
+
+Comments from the reviewer:
+
+Pros:
+- Project setup as API only
+- Uses new version of Ruby and Rails
+- Avoids N+1 queries
+- Discounts stored in the DB, which makes discount changes easier, without needing code changes
+- Seeds are idempotent
+- Good validations
+- Whitelists the keys to return to the user instead of allowing all keys which could cause a security issue (though using a serializer like JBuilder may be more maintainable)
+- Has a service layer for the cart object
+- Uses decimals for storing the price
+
+Cons:
+- Ignores non-existent codes. The README states this wouldn't be ignored in a production system, though it would have been nice to see that in this project
+- Have to send repeated values if you want more than 1 of an item. Though the README also mentions that this should be done by sending a "quantity" param
+- Loads all products which could get slow if we have hundreds or thousands of items
+- Loads all discounts instead of fetching only the appropriate ones
+- The Product primary key is the code instead of a regular ID. This makes it harder to change since discounts are linked through the code, so would all have to be updated as well
+- Does not use a linter, which can help keep consistent code (for example, there is an inconsistent use of `frozen_string_literal` and single, vs double quotes)
+- No specs for the models
+- Lots of duplicate specs for the controller to test logic that belongs to the Cart service
+- Product codes are case-sensitive, meaning we can have a "mug" and a "MUG", which can be more error prone for users
